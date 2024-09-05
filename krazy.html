@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cati 1.0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+
+        form {
+            margin-bottom: 20px;
+        }
+
+
+        input[type="text"], textarea, select, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+
+        .lessons {
+            margin-top: 20px;
+        }
+
+
+        .lesson {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .lesson h2 {
+            margin: 0 0 10px;
+            color: #4CAF50;
+        }
+
+
+        .lesson p {
+            margin: 0;
+        }
+
+
+        .lesson a {
+            display: block;
+            margin-top: 10px;
+            color: #337ab7;
+            text-decoration: none;
+        }
+
+
+        .lesson a:hover {
+            text-decoration: underline;
+        }
+
+
+        .lesson span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pseudo Canvas</h1>
+       
+        <form id="lesson-form">
+            <h2>ORRRRRRR</h2>
+
+
+            <label for="lesson-subject">Select Subject</label>
+            <select id="lesson-subject" required>
+                <option value="Math">Math</option>
+                <option value="English">English</option>
+                <option value="Science">Science</option>
+                <option value="PE">PE</option>
+                <option value="Arts">Arts</option>
+            </select>
+           
+            <label for="lesson-title">Lesson Title</label>
+            <input type="text" id="lesson-title" placeholder="Enter the title of the lesson" required>
+           
+            <label for="lesson-content">Lesson Content</label>
+            <textarea id="lesson-content" rows="5" placeholder="Enter the content of the lesson" required></textarea>
+           
+            <label for="lesson-file">Upload Document</label>
+            <input type="file" id="lesson-file" accept=".pdf,.doc,.docx,.ppt,.pptx">
+
+
+            <input type="submit" value="Post Lesson">
+        </form>
+
+
+        <div class="lessons" id="lessons">
+            <h2>Posted Lessons</h2>
+        </div>
+    </div>
+
+
+    <script>
+        // JavaScript to handle lesson posting
+        const form = document.getElementById('lesson-form');
+        const lessonsContainer = document.getElementById('lessons');
+
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+           
+            // Get form values
+            const subject = document.getElementById('lesson-subject').value;
+            const title = document.getElementById('lesson-title').value;
+            const content = document.getElementById('lesson-content').value;
+            const fileInput = document.getElementById('lesson-file');
+            let fileLink = '';
+
+
+            // Handle file upload if a file is selected
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileLink = URL.createObjectURL(file); // Create a temporary link to the uploaded file
+            }
+
+
+            // Create a new lesson div
+            const lessonDiv = document.createElement('div');
+            lessonDiv.classList.add('lesson');
+
+
+            // Add subject, title, content, and file link to the lesson div
+            lessonDiv.innerHTML = `
+                <h2>${title} <span>(${subject})</span></h2>
+                <p>${content}</p>
+                ${fileLink ? `<a href="${fileLink}" target="_blank">Download Document</a>` : ''}
+            `;
+
+
+            // Append lesson to the lessons container
+            lessonsContainer.appendChild(lessonDiv);
+
+
+            // Clear the form
+            form.reset();
+        });
+    </script>
+</body>
+</html>
