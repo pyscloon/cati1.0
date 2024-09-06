@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cati 1.0</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cati 1.0</h1>
+       
+        <form id="lesson-form">
+            <h2>Lesson Forms</h2>
+
+            <label for="grade-level">Select Grade Level</label>
+            <select id="grade-level" required>
+                <option value="Grade 11">Grade 11</option>
+                <option value="Grade 12">Grade 12</option>
+            </select>
+
+            <label for="semester">Select Semester</label>
+            <select id="semester" required>
+                <option value="1st Sem">1st Semester</option>
+                <option value="2nd Sem">2nd Semester</option>
+            </select>
+
+            <label for="lesson-subject">Select Subject</label>
+            <select id="lesson-subject" required>
+                <!-- Options will be populated based on the selected grade level and semester -->
+            </select>
+           
+            <label for="lesson-title">Lesson Title</label>
+            <input type="text" id="lesson-title" placeholder="Enter the title of the lesson" required>
+           
+            <label for="lesson-content">Lesson Content</label>
+            <textarea id="lesson-content" rows="5" placeholder="Enter the content of the lesson" required></textarea>
+           
+            <label for="lesson-file">Upload Document</label>
+            <input type="file" id="lesson-file" accept=".pdf,.doc,.docx,.ppt,.pptx">
+
+            <input type="submit" value="Post Lesson">
+        </form>
+
+        <div class="lessons" id="lessons">
+            <h2>Posted Lessons</h2>
+        </div>
+    </div>
+
+    <script>
+        const gradeLevel = document.getElementById('grade-level');
+        const semester = document.getElementById('semester');
+        const lessonSubject = document.getElementById('lesson-subject');
+
+        // Object containing subjects for each grade and semester
+        const subjectsForGradesAndSemesters = {
+            "Grade 11": {
+                "1st Sem": ["OralCom", "KomPan", "PhilArts", "GenMath", "EarthSci", "Culture", "PE1", "EAPP", "E-Tech"],
+                "2nd Sem": ["ReadWrite", "Basa", "Literature", "Stats", "PerDev", "PE2", "Piling", "PhilPolitics", "SocSci"]
+            },
+            "Grade 12": {
+                "1st Sem": ["MIL", "Philosophy", "PhySci", "PE3", "RQuanti", "RQuali", "CreativeWriting", "AppliedSocSci"],
+                "2nd Sem": ["Entrep", "RProject", "Creative Nonfiction", "Religion", "21st Century Culture", "CESC", "PE4"]
+            }
+        };
+
+        // Function to update subjects based on selected grade level and semester
+        function updateSubjects() {
+            const selectedGrade = gradeLevel.value;
+            const selectedSemester = semester.value;
+            const subjects = subjectsForGradesAndSemesters[selectedGrade]?.[selectedSemester] || [];
+
+            // Clear current subjects
+            lessonSubject.innerHTML = '';
+
+            // Populate subjects based on selected grade and semester
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                lessonSubject.appendChild(option);
+            });
+        }
+
+        // Update subjects when the page loads
+        updateSubjects();
+
+        // Update subjects when the grade level or semester changes
+        gradeLevel.addEventListener('change', updateSubjects);
+        semester.addEventListener('change', updateSubjects);
+
+        // JavaScript to handle lesson posting
+        const form = document.getElementById('lesson-form');
+        const lessonsContainer = document.getElementById('lessons');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+           
+            // Get form values
+            const subject = document.getElementById('lesson-subject').value;
+            const title = document.getElementById('lesson-title').value;
+            const content = document.getElementById('lesson-content').value;
+            const fileInput = document.getElementById('lesson-file');
+            let fileLink = '';
+
+            // Handle file upload if a file is selected
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileLink = URL.createObjectURL(file); // Create a temporary link to the uploaded file
+            }
+
+            // Create a new lesson div
+            const lessonDiv = document.createElement('div');
+            lessonDiv.classList.add('lesson');
+
+            // Add subject, title, content, and file link to the lesson div
+            lessonDiv.innerHTML = `
+                <h2>${title} <span>(${subject})</span></h2>
+                <p>${content}</p>
+                ${fileLink ? `<a href="${fileLink}" target="_blank">Download Document</a>` : ''}
+            `;
+
+            // Append lesson to the lessons container
+            lessonsContainer.appendChild(lessonDiv);
+
+            // Clear the form
+            form.reset();
+        });
+    </script>
+</body>
+</html>
