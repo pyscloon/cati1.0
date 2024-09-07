@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles3.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+
+            <input type="submit" value="Login">
+        </form>
+        <p id="login-message"></p>
+    </div>
+
+    <script>
+        // JavaScript to handle login functionality
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Fetch the username and password values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Hardcoded credentials for demonstration purposes
+            const validUsername = 'cati';
+            const validPassword = 'RRRR';
+
+            // Simple validation
+            if (username === validUsername && password === validPassword) {
+                // Display success message
+                document.getElementById('login-message').textContent = "Login successful!";
+                document.getElementById('login-message').style.color = 'green';
+
+                // Redirect to the new page
+                setTimeout(() => {
+                    window.location.href = 'popup.html'; // Change this to your desired page
+                }, 1000); // Wait 1 second before redirecting
+            } else {
+                // Display error message
+                document.getElementById('login-message').textContent = "Invalid username or password.";
+                document.getElementById('login-message').style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
